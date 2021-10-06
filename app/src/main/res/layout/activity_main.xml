@@ -13,6 +13,7 @@
         android:layout_marginBottom="24dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         android:text="Вопрос?"
         app:layout_constraintBottom_toTopOf="@+id/buttonSubmitQuestion"
         app:layout_constraintEnd_toEndOf="parent"

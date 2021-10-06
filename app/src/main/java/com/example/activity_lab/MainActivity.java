@@ -31,25 +31,25 @@ public class MainActivity extends AppCompatActivity {
 
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
-                            String answerString = data.getStringExtra("ANSWER_TEXT");
-                            MainActivity.this.lastAnswer.setText(answerString);
-                        }
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String answerString = data.getStringExtra("ANSWER_TEXT");
+                        MainActivity.this.lastAnswer.setText(answerString);
+                    }
+                    else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        Intent data = result.getData();
+                        String answerString = data.getStringExtra("RESULT_CANCELED_TEXT");
+                        MainActivity.this.lastAnswer.setText(answerString);
                     }
                 });
 
         this.submit = (Button)this.findViewById(R.id.buttonSubmitQuestion);
-        this.submit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
-                String questionText = MainActivity.this.question.getText().toString();
-                intent.putExtra("QUESTION_TEXT", questionText);
-                someActivityResultLauncher.launch(intent);
-            }
+        this.submit.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
+            String questionText = MainActivity.this.question.getText().toString();
+            intent.putExtra("QUESTION_TEXT", questionText);
+            someActivityResultLauncher.launch(intent);
         });
     }
 }
